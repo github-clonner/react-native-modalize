@@ -1,64 +1,65 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Modalize from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
-export class FixedContent extends React.PureComponent {
+export const FixedContent = ({ componentId }) => {
+  const modalizeRef = useRef(null);
+  const [toggle, setToggle] = useState(true);
 
-  modal = React.createRef();
+  handleClosed = () => {
+    Navigation.dismissOverlay(componentId);
+  };
 
-  componentDidMount() {
-    this.openModal();
-  }
-
-  renderContent = () => {
-    return (
-      <View style={s.content}>
-        <Text style={s.content__subheading}>{'Last step'.toUpperCase()}</Text>
-        <Text style={s.content__heading}>Send the message?</Text>
-        <Text style={s.content__description}>{faker.lorem.paragraph()}</Text>
-        <TextInput style={s.content__input} placeholder="Type your username" />
-
-        <TouchableOpacity
-          style={s.content__button}
-          activeOpacity={0.9}
-          onPress={this.closeModal}
-        >
-          <Text style={s.content__buttonText}>{'Send'.toUpperCase()}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  onClosed = () => {
-    Navigation.dismissOverlay(this.props.componentId);
-  }
-
-  openModal = () => {
-    if (this.modal.current) {
-      this.modal.current.open();
+  handleOpen = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.open();
     }
-  }
+  };
 
-  closeModal = () => {
-    if (this.modal.current) {
-      this.modal.current.close();
+  handleClose = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.close();
     }
-  }
+  };
 
-  render() {
-    return (
-      <Modalize
-        ref={this.modal}
-        onClosed={this.onClosed}
-        adjustToContentHeight
+  renderContent = () => (
+    <View style={s.content}>
+      <Text style={s.content__subheading}>{'Last step'.toUpperCase()}</Text>
+      <Text style={s.content__heading}>Send the message?</Text>
+      <Text style={s.content__description}>{faker.lorem.paragraph()}</Text>
+
+      <TouchableOpacity
+        style={s.content__description}
+        activeOpacity={0.75}
+        onPress={() => setToggle(!toggle)}
       >
-        {this.renderContent()}
-      </Modalize>
-    );
-  }
-}
+        <Text>adjustToContentHeight {JSON.stringify(toggle)}</Text>
+      </TouchableOpacity>
+
+      <TextInput
+        style={s.content__input}
+        placeholder="Type your username"
+        clearButtonMode="while-editing"
+      />
+
+      <TouchableOpacity style={s.content__button} activeOpacity={0.75} onPress={handleClose}>
+        <Text style={s.content__buttonText}>{'Send'.toUpperCase()}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  useEffect(() => {
+    handleOpen();
+  }, []);
+
+  return (
+    <Modalize ref={modalizeRef} onClosed={handleClosed} adjustToContentHeight={toggle}>
+      {renderContent()}
+    </Modalize>
+  );
+};
 
 const s = StyleSheet.create({
   content: {

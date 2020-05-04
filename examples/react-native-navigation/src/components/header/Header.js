@@ -7,7 +7,14 @@ export const Header = ({ subheading }) => (
     <Text style={s.header__subheading}>{subheading}</Text>
 
     <Text style={s.header__copy}>
-      Created by <Text style={s.header__author} onPress={() => Linking.openURL('https://github.com/jeremybarbet')}>Jérémy Barbet</Text> — v1.1.1
+      Created by{' '}
+      <Text
+        style={s.header__author}
+        onPress={() => Linking.openURL('https://github.com/jeremybarbet')}
+      >
+        Jérémy Barbet
+      </Text>{' '}
+      — v1.3.7-rc.28
     </Text>
   </View>
 );
@@ -37,7 +44,7 @@ const s = StyleSheet.create({
 
   header__copy: {
     marginTop: 20,
-    marginHorizontal: 40,
+    marginHorizontal: 30,
 
     fontSize: 14,
     color: '#b5b5b5',

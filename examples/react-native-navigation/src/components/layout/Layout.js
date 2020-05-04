@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 
-export const Layout = ({ children }) => (
-  <View style={s.app}>
-    {children}
-  </View>
+export const Layout = ({ children, style }) => (
+  <Animated.View style={[s.app, style]}>{children}</Animated.View>
 );
 
 const s = StyleSheet.create({

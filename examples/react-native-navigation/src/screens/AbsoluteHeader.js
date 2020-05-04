@@ -1,75 +1,72 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Modalize from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
-export class AbsoluteHeader extends React.PureComponent {
+export const AbsoluteHeader = ({ componentId }) => {
+  const modalizeRef = useRef(null);
 
-  modal = React.createRef();
+  const handleClosed = () => {
+    Navigation.dismissOverlay(componentId);
+  };
 
-  componentDidMount() {
-    this.openModal();
-  }
+  const handleOpen = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.open();
+    }
+  };
 
-  renderHeader = () => (
+  const handleClose = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.close();
+    }
+  };
+
+  const renderHeader = () => (
     <TouchableOpacity
       style={s.modal__header}
-      activeOpacity={0.8}
-      onPress={this.closeModal}
+      activeOpacity={0.75}
+      onPress={handleClose}
       hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
     >
       <Image
-        source={{ uri: 'https://flaticons.net/gd/makefg.php?i=icons/Mobile%20Application/Close.png&r=255&g=255&b=255' }}
-        style={{ width: '40%', height: '40%' }}
+        source={require('../assets/cross.png')}
+        style={{ tintColor: '#fff', width: '40%', height: '40%' }}
       />
     </TouchableOpacity>
-  )
+  );
 
   renderContent = () => (
     <View style={s.content}>
       <Text style={s.content__heading}>Article title</Text>
       <Text style={s.content__subheading}>November 11st 2018</Text>
-      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(8)}</Text>
+      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(10)}</Text>
     </View>
-  )
+  );
 
-  onClosed = () => {
-    Navigation.dismissOverlay(this.props.componentId);
-  }
+  useEffect(() => {
+    handleOpen();
+  }, []);
 
-  openModal = () => {
-    if (this.modal.current) {
-      this.modal.current.open();
-    }
-  }
-
-  closeModal = () => {
-    if (this.modal.current) {
-      this.modal.current.close();
-    }
-  }
-
-  render() {
-    return (
-      <Modalize
-        ref={this.modal}
-        HeaderComponent={this.renderHeader}
-        withHandle={false}
-        onClosed={this.onClosed}
-      >
-        {this.renderContent()}
-      </Modalize>
-    );
-  }
-}
+  return (
+    <Modalize
+      ref={modalizeRef}
+      HeaderComponent={renderHeader}
+      withHandle={false}
+      onClosed={handleClosed}
+    >
+      {renderContent()}
+    </Modalize>
+  );
+};
 
 const s = StyleSheet.create({
   modal__header: {
     position: 'absolute',
     top: 20,
     right: 20,
-    zIndex: 2,
+    zIndex: 9000,
 
     alignItems: 'center',
     justifyContent: 'center',

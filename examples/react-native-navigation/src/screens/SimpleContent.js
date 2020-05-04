@@ -1,19 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Modalize from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
-const { width } = Dimensions.get('window');
+export const SimpleContent = ({ componentId }) => {
+  const modalizeRef = useRef(null);
 
-export class SimpleContent extends React.PureComponent {
+  const handleClosed = () => {
+    Navigation.dismissOverlay(componentId);
+  };
 
-  modal = React.createRef();
-
-  componentDidMount() {
-    this.openModal();
-  }
+  const handleOpen = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.open();
+    }
+  };
 
   renderContent = () => [
     <View style={s.content__header} key="0">
@@ -22,65 +24,44 @@ export class SimpleContent extends React.PureComponent {
     </View>,
 
     <View style={s.content__inside} key="1">
-      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(3)}</Text>
+      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(4)}</Text>
       <Text style={[s.content__subheading, { marginTop: 30 }]}>Horizontal ScrollView</Text>
 
-      <ScrollView
-        style={s.content__scrollview}
-        horizontal
-      >
-        {Array(5).fill(0).map((_, i) => (
-          <View
-            key={i}
-            style={s.content__block}
-          />
-        ))}
+      <ScrollView style={s.content__scrollview} horizontal>
+        {Array(5)
+          .fill(0)
+          .map((_, i) => (
+            <View key={i} style={s.content__block} />
+          ))}
       </ScrollView>
 
-      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(2)}</Text>
-      <Text style={[s.content__subheading, { marginTop: 30 }]}>Vertical ScrollView</Text>
-
-      <ScrollView style={[s.content__scrollview, { height: 200 }]}>
-        {Array(5).fill(0).map((_, i) => (
-          <View
-            key={i}
-            style={[s.content__block, { width, marginBottom: 20 }]}
-          />
-        ))}
-      </ScrollView>
+      <Text style={s.content__paragraph}>{faker.lorem.paragraphs(5)}</Text>
 
       <TextInput
         style={s.content__input}
         placeholder="Type your username"
+        clearButtonMode="while-editing"
       />
     </View>,
-  ]
+  ];
 
-  onClosed = () => {
-    Navigation.dismissOverlay(this.props.componentId);
-  }
+  useEffect(() => {
+    handleOpen();
+  }, []);
 
-  openModal = () => {
-    if (this.modal.current) {
-      this.modal.current.open();
-    }
-  }
-
-  render() {
-    return (
-      <Modalize
-        ref={this.modal}
-        onClosed={this.onClosed}
-        scrollViewProps={{
-          showsVerticalScrollIndicator: false,
-          stickyHeaderIndices: [0],
-        }}
-      >
-        {this.renderContent()}
-      </Modalize>
-    );
-  }
-}
+  return (
+    <Modalize
+      ref={modalizeRef}
+      onClosed={handleClosed}
+      scrollViewProps={{
+        showsVerticalScrollIndicator: false,
+        stickyHeaderIndices: [0],
+      }}
+    >
+      {renderContent()}
+    </Modalize>
+  );
+};
 
 const s = StyleSheet.create({
   content__header: {

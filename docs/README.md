@@ -2,25 +2,20 @@
 
 [![npm version](https://badge.fury.io/js/react-native-modalize.svg)](https://badge.fury.io/js/react-native-modalize)
 
-A modal that loves scrollable content.
+A highly customizable modal/bottom sheet that loves scrolling content.
 
-This component has been built with `react-native-gesture-handler` to address the common issue of **scrolling**, **swipping** and handling the **keyboard** behaviors, you can face with react-native's modal. This component comes with a ScrollView, the default content renderer, a FlatList and a SectionList. They are all three built-in and make your life easier, just pass your content and Modalize will handle the rest for you.
+This component has been built with `react-native-gesture-handler` to address the common issue of **scrolling**, **swiping** and handling the **keyboard** behaviors, you can face with react-native's modal.
+
+This component comes with a ScrollView, the default renderer, a FlatList or a SectionList. They are all three built-in and make your life easier, just pass your content and Modalize will handle the rest for you. You can also have the possibility to pass your own custom renderer.
 
 <p align="left">
-  <img src="https://user-images.githubusercontent.com/937328/59955680-22f6d200-947b-11e9-8744-991a728596df.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955681-22f6d200-947b-11e9-9288-9142e98ffae8.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955682-22f6d200-947b-11e9-8ed5-6a29042e72f1.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955683-22f6d200-947b-11e9-89e8-3608eea34e8d.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955684-22f6d200-947b-11e9-97d2-0687a29921db.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955685-238f6880-947b-11e9-81f9-6345fba118f5.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955686-238f6880-947b-11e9-896a-bcdb34e827b7.gif" height="450" />
-  <img src="https://user-images.githubusercontent.com/937328/59955687-238f6880-947b-11e9-9345-55ea2bc8e458.gif" height="450" />
+  <img src="https://user-images.githubusercontent.com/937328/80501705-458d2d80-895f-11ea-9667-d193c135cabf.gif" height="582" alt="Simple" />
+  <img src="https://user-images.githubusercontent.com/937328/80501698-42923d00-895f-11ea-8db0-da3d4f772710.gif" height="582" alt="Fixed" />
+  <img src="https://user-images.githubusercontent.com/937328/80501699-432ad380-895f-11ea-9dad-22505038234e.gif" height="582" alt="Snapping" />
+  <img src="https://user-images.githubusercontent.com/937328/80501647-35754e00-895f-11ea-8ce0-cb53d2985787.gif" height="582" alt="Absolute" />
+  <img src="https://user-images.githubusercontent.com/937328/80501682-3efeb600-895f-11ea-9c04-64154cf77012.gif" height="582" alt="FlatList" />
+  <img src="https://user-images.githubusercontent.com/937328/80501668-3a3a0200-895f-11ea-92b6-a7bc9b301a1a.gif" height="582" alt="Open" />
+  <img src="https://user-images.githubusercontent.com/937328/80615701-881e3b00-8a2f-11ea-94f5-a4cbf6d13d97.gif" height="582" alt="Apple" />
+  <img src="https://user-images.githubusercontent.com/937328/80501688-40c87980-895f-11ea-97db-63b9b029eab4.gif" height="582" alt="Facebook" />
+  <img src="https://user-images.githubusercontent.com/937328/80501707-4625c400-895f-11ea-8436-8e89de3b437e.gif" height="582" alt="Slack" />
 </p>
-
-## Examples
-
-There is multiple examples runing through differents navigators, with more informations [here](/EXAMPLES.md).
-
-- React Native Navigation `examples/react-native-navigation`
-- React Navigation `examples/react-navigation`
-- Expo `examples/expo` (TODO)

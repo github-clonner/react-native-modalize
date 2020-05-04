@@ -1,82 +1,84 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import Modalize from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
-export class SectionList extends React.PureComponent {
+export const SectionList = ({ componentId }) => {
+  const modalizeRef = useRef(null);
 
-  modal = React.createRef();
-
-  componentDidMount() {
-    this.openModal();
-  }
-
-  get sections() {
-    return [
-      {
-        title: 'January 2019',
-        data: Array(10).fill(0).map(_ => ({
+  const getSections = () => [
+    {
+      title: 'January 2019',
+      data: Array(10)
+        .fill(0)
+        .map(_ => ({
           product: faker.commerce.productName(),
           price: faker.commerce.price(),
         })),
-      },
-      {
-        title: 'December 2018',
-        data: Array(12).fill(0).map(_ => ({
+    },
+    {
+      title: 'December 2018',
+      data: Array(12)
+        .fill(0)
+        .map(_ => ({
           product: faker.commerce.productName(),
           price: faker.commerce.price(),
         })),
-      },
-      {
-        title: 'November 2018',
-        data: Array(4).fill(0).map(_ => ({
+    },
+    {
+      title: 'November 2018',
+      data: Array(4)
+        .fill(0)
+        .map(_ => ({
           product: faker.commerce.productName(),
           price: faker.commerce.price(),
         })),
-      },
-    ];
-  }
+    },
+  ];
 
-  renderItem = ({ item }) => (
+  const handleClosed = () => {
+    Navigation.dismissOverlay(componentId);
+  };
+
+  const handleOpen = () => {
+    if (modalizeRef.current) {
+      modalizeRef.current.open();
+    }
+  };
+
+  const renderItem = ({ item }) => (
     <View style={s.item}>
       <Text style={s.item__product}>{item.product}</Text>
       <Text style={s.item__price}>{item.price}€</Text>
     </View>
-  )
+  );
 
-  renderSectionHeader = ({ section }) => (
+  const renderSectionHeader = ({ section }) => (
     <View style={s.header}>
       <Text style={s.header__name}>{section.title.toUpperCase()}</Text>
     </View>
-  )
+  );
 
-  onClosed = () => {
-    Navigation.dismissOverlay(this.props.componentId);
-  }
+  useEffect(() => {
+    handleOpen();
+  }, []);
 
-  openModal = () => {
-    if (this.modal.current) {
-      this.modal.current.open();
-    }
-  }
-
-  render() {
-    return (
-      <Modalize
-        ref={this.modal}
-        onClosed={this.onClosed}
-        sectionListProps={{
-          sections: this.sections,
-          renderItem: this.renderItem,
-          renderSectionHeader: this.renderSectionHeader,
-          keyExtractor: (item, index) => `${item.title}-${index}`,
-          showsVerticalScrollIndicator: false,
-        }}
-      />
-    );
-  }
-}
+  return (
+    <Modalize
+      ref={modalizeRef}
+      onClosed={handleClosed}
+      childrenStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12, overflow: 'hidden' }}
+      sectionListProps={{
+        sections: getSections(),
+        renderItem: renderItem,
+        renderSectionHeader: renderSectionHeader,
+        keyExtractor: (item, index) => `${item.title}-${index}`,
+        showsVerticalScrollIndicator: false,
+      }}
+    />
+  );
+};
 
 const s = StyleSheet.create({
   item: {

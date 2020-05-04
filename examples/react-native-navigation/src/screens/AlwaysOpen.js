@@ -1,33 +1,40 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Modalize from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import faker from 'faker';
 
-export class AlwaysOpen extends React.PureComponent {
+import { Button } from '../components/button/Button';
 
-  modal = React.createRef();
+export const AlwaysOpen = () => {
+  const modalizeRef = useRef(null);
 
-  renderContent = () => (
+  const handleClose = dest => {
+    if (modalizeRef.current) {
+      modalizeRef.current.close(dest);
+    }
+  };
+
+  const renderContent = () => (
     <View style={s.content}>
       <Text style={s.content__subheading}>{'Introduction'.toUpperCase()}</Text>
       <Text style={s.content__heading}>Always open modal!</Text>
       <Text style={s.content__description}>{faker.lorem.paragraph()}</Text>
+      <Button name="Close to initial position" onPress={() => handleClose('alwaysOpen')} />
+      <Button name="Close completely" onPress={handleClose} />
     </View>
-  )
+  );
 
-  render() {
-    return (
-      <Modalize
-        ref={this.modal}
-        style={s.content__modal}
-        alwaysOpen={85}
-        handlePosition="inside"
-      >
-        {this.renderContent()}
-      </Modalize>
-    );
-  }
-}
+  return (
+    <Modalize
+      ref={modalizeRef}
+      modalStyle={s.content__modal}
+      alwaysOpen={85}
+      handlePosition="inside"
+    >
+      {renderContent()}
+    </Modalize>
+  );
+};
 
 const s = StyleSheet.create({
   content: {
